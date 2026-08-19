@@ -1,5 +1,12 @@
-README TEMA:
 
+Optimized Text Editor Backend
+Overview
+This project focuses on optimizing the backend of a terminal-based text editor built with the ncurses library. In a naive implementation, storing text in a contiguous
+array requires shifting massive amounts of data for every insertion or deletion, resulting in O(N) complexity. To solve this, the project implements a highly efficient
+Piece Table data structure. This approach avoids heavy data copying, achieving much faster editing operations.
+
+
+Explicatie cod: 
 Am ales, cum este si recomandat in tema, sa folosesc un Piece Table, care este eficient atunci cand lucram cu fisiere mari.
 Acesta functioneaza dupa ideea a doua buffere, original buffer care contine textul initial din fisier sau cel string
 care nu va fi niciodata schimbat. Add buffer se refera la bufferul in care se adauga prin concatenare text nou.
