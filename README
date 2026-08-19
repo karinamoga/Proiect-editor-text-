@@ -1,0 +1,32 @@
+README TEMA:
+
+Am ales, cum este si recomandat in tema, sa folosesc un Piece Table, care este eficient atunci cand lucram cu fisiere mari.
+Acesta functioneaza dupa ideea a doua buffere, original buffer care contine textul initial din fisier sau cel string
+care nu va fi niciodata schimbat. Add buffer se refera la bufferul in care se adauga prin concatenare text nou.
+Am folosit o lista dublu inlantuita de piece-uri ca sa fie mai usor sa trecem prin ele si sa modificam textul.
+Avem pentru fiecare nod, tipul bufferului, startul adica de unde incepe bufferul respectiv, si len care se refera la nr de caractere din piesa curenta
+Cu aceasta lista se insereaza mult mai rapid decat daca am fi folosit un array. Avem O(1) chiar si cand trebuie sa inseram text la mijlocul unei piese existente,
+pentru ca trebuie doar sa rupem piesa si sa legam noua piesa intre piesele rupte.
+Si de asemenea, putem sa ne miscam si in fata si inapoi, si putem modifica textul din spatele cursorului.
+
+
+Pentru create_table, am folosit functia helper create_piece prin care aloc memorie unui obiect de tip piece.
+si functia read_file_content, in care masuram fisierul, folosind fseek, cu care se muta cursorul la sfarsitul fisierului,
+cu ftell avem nr total de caractere , fiind la final, trimitem cursoru la inceput. Si acum stim cat de mare e si putem sa alocam loc.
+In functia principala alocam structura texteditor folosind calloc ca sa fie initializate cu 0, punem o cap maxima in add buffer, punem continutul in original buffer si daca exista text initial cream un nod piesa fiind singura adica si head si tail
+
+Pentru add_text, textul nou se adauga la sfarsitului bufferului add, cautam in lista locul cursorului, si inseram o piesa noua in lista unde avem 3 cazuri, inceput, final si intre piese.
+Si ca complexitate, este ok pentru ca doar trebuie sa parcurgem lista de piese ca sa gasim cursorul, ceea ce este rapid.
+Si ca sa avem complexitatea cel mai buna, ca sa nu avem un realloc de mai multe ori, dublam capacitatea direct cand este insuficienta.
+In afar de cele 3 cazuri, putem avea si lista vida deci piecul este head si tail, cele 2 la inceput si la final unde doar refacem legaturile noi, si inserarea la mijloc,
+daca cursorul nu este intre piese si e practic intr un nod, cream un nou nod care ia textul din nodul curent scurtam nodul curent si inseram piesa noua la mijl.
+actualizam lungimile si avansam cu cursorul.
+
+Pentru delete_text , inainte sa stergem orice, izolam textul din dreapta cursorului fiind intr o piesa separata.
+Se parcurge lista de piese inapoi, ca sa vedem ce trb sa modificam sau sa eliminam, si daca avem o piesa in toata zona de stergere o stergem complet, daca e doar op portiune de piece trebuie sa actualizam lenghtul piesei.
+Complexitatea e buna pentru ca doar modificam cateva legaturi intre noduri nu facem altceva.
+identificam unde e cursorul, apealm si create piece ca sa cream o piesa dreapta in caz ca se afla la mijlocul unei piese, intr o variabila avem textul care ramane sa fie sters.
+
+In extract_current_text, trebuie sa reconstituim textul aflat in  2 buffere.De data asta complexitatea nu e leagat doar de piese pt ca parcurgem lista dar si caracterele folosind memcpy sa le punem in noul buffer.
+Parcurgem toata lista de piese, si verificam de unde provne fiecare nod , din ce buffer. 
+in save current text, complexitatea este data de marimea textului, pentru ca parcurgmem piesele si scriem pe disc. 
